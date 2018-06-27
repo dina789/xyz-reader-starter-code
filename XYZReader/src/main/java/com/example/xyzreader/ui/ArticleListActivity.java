@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -38,11 +39,10 @@ import java.util.GregorianCalendar;
  * touched, lead to a {@link ArticleDetailActivity} representing item details. On tablets, the
  * activity presents a grid of items as cards.
  */
-public class ArticleListActivity extends ActionBarActivity implements
+public class ArticleListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = ArticleListActivity.class.toString();
-    private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
 
@@ -57,10 +57,10 @@ public class ArticleListActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolBar = (Toolbar)findViewById(R.id.activity_my_toolbar);
+        setSupportActionBar(toolBar);
 
-
-        final View toolbarContainerView = findViewById(R.id.toolbar_container);
+        //final View toolbarContainerView = findViewById(R.id.toolbar_container);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
@@ -79,8 +79,18 @@ public class ArticleListActivity extends ActionBarActivity implements
     @Override
     protected void onStart() {
         super.onStart();
+
+
+
+
+
+
         registerReceiver(mRefreshingReceiver,
                 new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
+
+
+
+
     }
 
     @Override
@@ -146,8 +156,9 @@ public class ArticleListActivity extends ActionBarActivity implements
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
+                    Intent detailIntent =new Intent(Intent.ACTION_VIEW,
+                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
+                    startActivity(detailIntent);
                 }
             });
             return vh;
@@ -209,3 +220,18 @@ public class ArticleListActivity extends ActionBarActivity implements
         }
     }
 }
+//mCollapsingToolbar.setTitleEnabled(false);
+//https://www.i-programmer.info/professional-programmer/accreditation/11252-insiders-guide-to-udacity-android-developer-nanodegree-part-5-make-your-app-material.html?start=2
+
+
+//https://guides.codepath.com/android/Handling-Scrolls-with-CoordinatorLayout#expanding-and-collapsing-toolbars
+//https://android-developers.googleblog.com/2014/10/appcompat-v21-material-design-for-pre.html
+//https://stackoverflow.com/questions/26554996/change-toolbar-color-in-appcompat-21
+//https://material.io/design/color/the-color-system.html#tools-for-picking-colors
+//https://romannurik.github.io/AndroidAssetStudio/nine-patches.html#&sourceDensity=320&name=example
+//https://www.androidhive.info/2015/09/android-material-design-working-with-tabs/
+//https://antonioleiva.com/collapsing-toolbar-layout/
+//https://discussions.udacity.com/t/hi-all-i-am-designing-my-news-app-capstone-project-what-do-you-think-it-is-looks-or-i-have-to-change-design-thanks/597552/342
+//https://antonioleiva.com/collapsing-toolbar-layout/
+//https://github.com/dina789/FinalProject-master-master-master-master/blob/master/app/src/main/res/values/colors.xml
+//https://classroom.udacity.com/nanodegrees/nd801/parts/dc8a9fde-5a34-4241-bcbb-62e79ac84404/modules/403589875175460/lessons/4755536308/concepts/47904189830923
